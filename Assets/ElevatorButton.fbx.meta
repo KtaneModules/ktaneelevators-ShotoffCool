@@ -1,47 +1,14 @@
 fileFormatVersion: 2
-guid: 5cb5a2eb76a6a52409cea266b2e4f726
+guid: bce45cdfe4369cd4eb30ce3401575696
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: Body
-    100002: Boots
-    100004: Cube
-    100006: Eyes
-    100008: Glasses
-    100010: //RootNode
-    100012: Head
-    100014: Legs
-    400000: Body
-    400002: Boots
-    400004: Cube
-    400006: Eyes
-    400008: Glasses
-    400010: //RootNode
-    400012: Head
-    400014: Legs
+    100000: //RootNode
+    400000: //RootNode
     2100000: No Name
-    2100002: Material.001
-    2300000: Body
-    2300002: Boots
-    2300004: Cube
-    2300006: Eyes
-    2300008: Glasses
-    2300010: Head
-    2300012: Legs
-    3300000: Body
-    3300002: Boots
-    3300004: Cube
-    3300006: Eyes
-    3300008: Glasses
-    3300010: Head
-    3300012: Legs
-    4300000: Body
-    4300002: Head
-    4300004: Glasses
-    4300006: Legs
-    4300008: Boots
-    4300010: Cube
-    4300012: Eyes
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Cube
   externalObjects: {}
   materials:
     importMaterials: 1

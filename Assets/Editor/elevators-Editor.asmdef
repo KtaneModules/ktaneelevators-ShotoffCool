@@ -1,0 +1,10 @@
+{
+  "name": "elevators-Editor",
+  "references": [
+    "elevators"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": []
+}
