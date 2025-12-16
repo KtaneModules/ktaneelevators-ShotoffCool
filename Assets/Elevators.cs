@@ -4,22 +4,23 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Elevators : MonoBehaviour {
-	public int startingFloor;
-	public int currentElevatorFloor;
-	public float currentElevatorFloorFloat;
-	public int currentPlayerFloor;
+public class Elevators : MonoBehaviour
+{
+    public int startingFloor;
+    public int currentElevatorFloor;
+    public float currentElevatorFloorFloat;
+    public int currentPlayerFloor;
     public int destinationFloor;
 
-	public string floorString;
-	public Text floorText;
+    public string floorString;
+    public Text floorText;
 
-	int shirt1Color;
-	int shirt2Color;
-	int pants1Color;
-	int pants2Color;
-	int glasses1;
-	int glasses2;
+    int shirt1Color;
+    int shirt2Color;
+    int pants1Color;
+    int pants2Color;
+    int glasses1;
+    int glasses2;
 
     int sfxMultiplier;
 
@@ -74,49 +75,55 @@ public class Elevators : MonoBehaviour {
 
     InitialDirection initialDirection;
 
-	//Objects in the arrays goes as follows: Parent Object, Glasses, Shirt, Pants, Nametag
-	public GameObject[] guy1;
-	public GameObject[] guy2;
+    //Objects in the arrays goes as follows: Parent Object, Glasses, Shirt, Pants, Nametag
+    public GameObject[] guy1;
+    public GameObject[] guy2;
 
-	int[][] currentFindingTable;
+    int[][] currentFindingTable =
+    {
+        new int[] { 50, 25, 48, 75, 68, 56, 08, 87, 69, 27 },
+        new int[] { 33, 95, 53, 15, 96, 66, 76, 74, 62, 67 },
+        new int[] { 79, 30, 31, 11, 19, 98, 18, 41, 07, 47 },
+        new int[] { 09, 65, 59, 54, 82, 13, 80, 52, 44, 24 },
+        new int[] { 60, 88, 43, 58, 29, 63, 20, 12, 72, 10 },
+        new int[] { 40, 78, 55, 04, 06, 86, 36, 77, 32, 94 },
+        new int[] { 23, 22, 38, 73, 92, 00, 61, 02, 51, 90 },
+        new int[] { 34, 01, 71, 93, 91, 46, 37, 81, 70, 89 },
+        new int[] { 39, 35, 28, 14, 83, 26, 05, 64, 45, 49 },
+        new int[] { 57, 17, 99, 84, 97, 16, 03, 42, 85, 21 }
+    };
 
-	int[] tableRow0 = { 50, 25, 48, 75, 68, 56, 08, 87, 69, 27 };
-	int[] tableRow1 = { 33, 95, 53, 15, 96, 66, 76, 74, 62, 67 };
-	int[] tableRow2 = { 79, 30, 31, 11, 19, 98, 18, 41, 07, 47 };
-	int[] tableRow3 = { 09, 65, 59, 54, 82, 13, 80, 52, 44, 24 };
-	int[] tableRow4 = { 60, 88, 43, 58, 29, 63, 20, 12, 72, 10 };
-	int[] tableRow5 = { 40, 78, 55, 04, 06, 86, 36, 77, 32, 94 };
-	int[] tableRow6 = { 23, 22, 38, 73, 92, 00, 61, 02, 51, 90 };
-	int[] tableRow7 = { 34, 01, 71, 93, 91, 46, 37, 81, 70, 89 };
-	int[] tableRow8 = { 39, 35, 28, 14, 83, 26, 05, 64, 45, 49 };
-	int[] tableRow9 = { 57, 17, 99, 84, 42, 16, 03, 97, 85, 21 };
-	
-	void Start ()
-	{
-		currentFindingTable = new int[][] {tableRow0, tableRow1, tableRow2, tableRow3, tableRow4, tableRow5, tableRow6, tableRow7, tableRow8, tableRow9 };
-        sfxs = new AudioClip[][] { new AudioClip[1], yawns, snorts, sneezes, new AudioClip[1], coughs, throatClears};
+    void Start()
+    {
+        sfxs = new AudioClip[][] { new AudioClip[1], yawns, snorts, sneezes, new AudioClip[1], coughs, throatClears };
 
-		startingFloor = Random.Range(1, 100);
+        startingFloor = Random.Range(1, 100);
+
+        Debug.LogFormat("[elevators #{0}] Starting floor is" + startingFloor, moduleId);
+
         currentElevatorFloor = startingFloor;
         currentElevatorFloorFloat = startingFloor;
-		floorString = string.Format("{0:00.#}", startingFloor);
-		floorText.text = floorString;
+        floorString = string.Format("{0:00.#}", startingFloor);
+        floorText.text = floorString;
 
-		currentPlayerFloor = currentFindingTable[int.Parse(floorString[0].ToString())][int.Parse(floorString[1].ToString())];
+        currentPlayerFloor = currentFindingTable[int.Parse(floorString[0].ToString())][int.Parse(floorString[1].ToString())];
 
-        if(startingFloor < currentPlayerFloor)
+        Debug.LogFormat("[elevators #{0}] Players floor is " + currentPlayerFloor, moduleId);
+        if (startingFloor < currentPlayerFloor)
         {
             initialDirection = InitialDirection.Up;
+            Debug.LogFormat("[elevators #{0}] Initial direction is up", moduleId);
         }
         else
         {
             initialDirection = InitialDirection.Down;
+            Debug.LogFormat("[elevators #{0}] Initial direction is down", moduleId);
         }
-	}
+    }
 
-	void Update ()
-	{
-        if(goingUp && goingDown)
+    void Update()
+    {
+        if (goingUp && goingDown)
         {
             module.HandleStrike();
             goingUp = false;
@@ -125,7 +132,7 @@ public class Elevators : MonoBehaviour {
 
         if (goingUp)
         {
-            currentElevatorFloorFloat += Time.deltaTime * (bobAppearance?15:2);
+            currentElevatorFloorFloat += Time.deltaTime * (bobAppearance ? 15 : 2);
             currentElevatorFloor = (int)Mathf.Floor(currentElevatorFloorFloat);
         }
 
@@ -135,7 +142,7 @@ public class Elevators : MonoBehaviour {
             currentElevatorFloor = (int)Mathf.Floor(currentElevatorFloorFloat);
         }
 
-        if (goingUp || goingDown) 
+        if (goingUp || goingDown)
         {
             if (elevatorMusic == null)
             {
@@ -158,7 +165,7 @@ public class Elevators : MonoBehaviour {
             if (sfxReplayTimer <= 0)
             {
                 sfxReplayTimer = 10;
-                if(playedSoundEffect != 4)
+                if (playedSoundEffect != 4)
                 {
                     int clipToPlay = Random.Range(0, sfxs[playedSoundEffect].Length);
                     audio.PlaySoundAtTransform(sfxs[playedSoundEffect][clipToPlay].name, this.transform);
@@ -196,7 +203,7 @@ public class Elevators : MonoBehaviour {
                 rightElevatorDoor.transform.localPosition = new Vector3(newRightPosition, rightElevatorDoor.transform.localPosition.y, rightElevatorDoor.transform.localPosition.z);
             }
         }
-        else if(!elevatorIsOpening && elevatorIsOpen)
+        else if (!elevatorIsOpening && elevatorIsOpen)
         {
             float newLeftPosition = leftElevatorDoor.transform.localPosition.x - Time.deltaTime * (leftDoorOpenPos - leftDoorClosedPos);
             float newRightPosition = rightElevatorDoor.transform.localPosition.x - Time.deltaTime * (rightDoorOpenPos - rightDoorClosedPos);
@@ -232,9 +239,9 @@ public class Elevators : MonoBehaviour {
 
         if (goingToPlayer)
         {
-            if(initialDirection == InitialDirection.Up)
+            if (initialDirection == InitialDirection.Up)
             {
-                if(currentElevatorFloor > currentPlayerFloor)
+                if (currentElevatorFloor > currentPlayerFloor)
                 {
                     goingUp = false;
                     goingToPlayer = false;
@@ -247,7 +254,7 @@ public class Elevators : MonoBehaviour {
             }
             else
             {
-                if(currentElevatorFloor < currentPlayerFloor)
+                if (currentElevatorFloor < currentPlayerFloor)
                 {
                     goingDown = false;
                     goingToPlayer = false;
@@ -263,15 +270,15 @@ public class Elevators : MonoBehaviour {
         {
             if (bobAppearance)
             {
-                if(currentElevatorFloor >= 606)
+                if (currentElevatorFloor >= 606)
                 {
+                    goingUp = false;
                     module.HandlePass();
                     moduleSolved = true;
                     return;
                 }
             }
-
-            if (initialDirection == InitialDirection.Down)
+            else if(initialDirection == InitialDirection.Down)
             {
                 if (currentElevatorFloor > destinationFloor)
                 {
@@ -294,7 +301,7 @@ public class Elevators : MonoBehaviour {
                 }
             }
         }
-	}
+    }
 
     private void Awake()
     {
@@ -327,7 +334,7 @@ public class Elevators : MonoBehaviour {
                 }
                 else
                 {
-                    if(initialDirection == InitialDirection.Up)
+                    if (initialDirection == InitialDirection.Up)
                     {
                         goingUp = true;
                     }
@@ -340,7 +347,7 @@ public class Elevators : MonoBehaviour {
             }
             else
             {
-                if(initialDirection == InitialDirection.Down)
+                if (initialDirection == InitialDirection.Down || bobAppearance)
                 {
                     if (!goingUp)
                     {
@@ -348,7 +355,7 @@ public class Elevators : MonoBehaviour {
                     }
                     else
                     {
-                        if(currentElevatorFloor == destinationFloor)
+                        if (currentElevatorFloor == destinationFloor)
                         {
                             module.HandlePass();
                             moduleSolved = true;
@@ -457,7 +464,7 @@ public class Elevators : MonoBehaviour {
     }
 
     void GeneratePeople()
-	{
+    {
         shirt1Color = 0;
         shirt2Color = 0;
         pants1Color = 0;
@@ -466,43 +473,48 @@ public class Elevators : MonoBehaviour {
         glasses2 = 0;
         sfxMultiplier = 0;
 
+        string logStringShirt1= "";
+        string logStringShirt2 = "";
+        string logStringPants1 = "";
+        string logStringPants2 = "";
+        string logStringGlasses1 = "";
+        string logStringGlasses2 = "";
+
         guy1[4].SetActive(false);
         guy2[4].SetActive(false);
         guy1[0].SetActive(true);
         guy2[0].SetActive(false);
 
-
-
-        switch (Random.Range(1,4))
-		{
-			case 1:
-				shirt1Color = 2;
-				guy1[2].GetComponent<MeshRenderer>().material.color = new Color(0, 0.7f, 0);
-                Debug.Log("Green Shirt 1");
-				break;
-			case 2:
+        switch (Random.Range(1, 4))
+        {
+            case 1:
+                shirt1Color = 2;
+                guy1[2].GetComponent<MeshRenderer>().material.color = new Color(0, 0.7f, 0);
+                logStringShirt1 = "Green";
+                break;
+            case 2:
                 shirt1Color = 5;
                 guy1[2].GetComponent<MeshRenderer>().material.color = new Color(0.7f, 0, 0);
-                Debug.Log("Red Shirt 1");
+                logStringShirt1 = "Red";
                 break;
-			case 3:
-				shirt1Color = 6;
-				guy1[2].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0.7f);
-                Debug.Log("Blue Shirt 1");
+            case 3:
+                shirt1Color = 6;
+                guy1[2].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0.7f);
+                logStringShirt1 = "Blue";
                 break;
-		}
+        }
 
-		switch (Random.Range(1,3))
-		{
+        switch (Random.Range(1, 3))
+        {
             case 1:
                 pants1Color = 3;
                 guy1[3].GetComponent<MeshRenderer>().material.color = new Color(0.1f, 0.1f, 0.1f);
-                Debug.Log("Black Pants 1");
+                logStringPants1 = "Black";
                 break;
             case 2:
                 pants1Color = 1;
                 guy1[3].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0.7f);
-                Debug.Log("Blue Pants 1");
+                logStringPants1 = "Blue";
                 break;
         }
 
@@ -511,40 +523,42 @@ public class Elevators : MonoBehaviour {
             case 1:
                 glasses1 = 4;
                 guy1[1].SetActive(true);
-                Debug.Log("Glasses On 1");
+                logStringGlasses1 = "on";
                 break;
             case 2:
                 glasses1 = 0;
                 guy1[1].SetActive(false);
-                Debug.Log("Glasses Off 1");
+                logStringGlasses1 = "off";
                 break;
         }
 
-		int peopleAmount = Random.Range(1, 3);
+        int peopleAmount = Random.Range(1, 3);
 
-		if(peopleAmount == 1)
-		{
-			guy2[0].SetActive(false);
-            Debug.Log("No guy 2");
-		}
-		else
-		{
+        if (peopleAmount == 1)
+        {
+            guy2[0].SetActive(false);
+            Debug.LogFormat("[elevators #{0}] Dude 1: " + logStringShirt1 + " shirt, " + logStringPants1 + " pants, Glasses " + logStringGlasses1 + ". Dude 2: No", moduleId);
+        }
+        else
+        {
+            guy2[0].SetActive(true);
+
             switch (Random.Range(1, 4))
             {
                 case 1:
                     shirt2Color = 2;
                     guy2[2].GetComponent<MeshRenderer>().material.color = new Color(0, 0.7f, 0);
-                    Debug.Log("Green Shirt 2");
+                    logStringShirt2 = "Green";
                     break;
                 case 2:
                     shirt2Color = 5;
                     guy2[2].GetComponent<MeshRenderer>().material.color = new Color(0.7f, 0, 0);
-                    Debug.Log("Red Shirt 2");
+                    logStringShirt2 = "Red";
                     break;
                 case 3:
                     shirt2Color = 6;
                     guy2[2].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0.7f);
-                    Debug.Log("Blue Shirt 2");
+                    logStringShirt2 = "Blue";
                     break;
             }
 
@@ -553,12 +567,12 @@ public class Elevators : MonoBehaviour {
                 case 1:
                     pants2Color = 3;
                     guy2[3].GetComponent<MeshRenderer>().material.color = new Color(0.1f, 0.1f, 0.1f);
-                    Debug.Log("Black Pants 2");
+                    logStringPants2 = "Black";
                     break;
                 case 2:
                     pants2Color = 1;
                     guy2[3].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0.7f);
-                    Debug.Log("Blue Pants 2");
+                    logStringPants2 = "Blue";
                     break;
             }
 
@@ -567,25 +581,29 @@ public class Elevators : MonoBehaviour {
                 case 1:
                     glasses2 = 4;
                     guy2[1].SetActive(true);
-                    Debug.Log("Glasses On 2");
+                    logStringGlasses2 = "on";
                     break;
                 case 2:
                     glasses2 = 0;
                     guy2[1].SetActive(false);
-                    Debug.Log("Glasses Off 2");
+                    logStringGlasses2 = "off";
                     break;
             }
+
+
+            Debug.LogFormat("[elevators #{0}] Dude 1: " + logStringShirt1 + " shirt, " + logStringPants1 + " pants, Glasses " + logStringGlasses1 + ". Dude 2: " + logStringShirt2 + " shirt, " + logStringPants2 + " pants, " + logStringGlasses2 + " glasses.", moduleId);
         }
 
         int clipToPlay;
-        playedSoundEffect = Random.Range(1,7);
+        playedSoundEffect = Random.Range(1, 7);
         if (playedSoundEffect != 4)
         {
             clipToPlay = Random.Range(0, sfxs[playedSoundEffect].Length);
             audio.PlaySoundAtTransform(sfxs[playedSoundEffect][clipToPlay].name, this.transform);
-            
+
         }
         sfxMultiplier = playedSoundEffect;
+        Debug.LogFormat("[elevators #{0}] Sfx multipier is " + sfxMultiplier, moduleId);
 
         int destinationModifier = (shirt1Color + shirt2Color + pants1Color + pants2Color + glasses1 + glasses2) * sfxMultiplier;
 
@@ -604,12 +622,26 @@ public class Elevators : MonoBehaviour {
         {
             if (indicator == "BOB")
             {
-                //if (Random.Range(1, 501) == 500)
-                if (true)
+                if (Random.Range(1, 501) == 500)
                 {
                     guy1[4].SetActive(true);
                     destinationFloor = 606;
                     bobAppearance = true;
+                    switch(Random.Range(0, 4))
+                    {
+                        case 0:
+                            Debug.LogFormat("[elevators #{0}] HOLY SHIT ITS HIM, BOB APPEARED GO TO FLOOR 606", moduleId);
+                            break;
+                        case 1:
+                            Debug.LogFormat("[elevators #{0}] Wait, is that bob? Go to floor 606", moduleId);
+                            break;
+                        case 2:
+                            Debug.LogFormat("[elevators #{0}] 1 in 500 btw, its bob, go to floor 606", moduleId);
+                            break;
+                        case 3:
+                            Debug.LogFormat("[elevators #{0}] BOB APPEARANCE!!!!!1!!1! To floor 606 we go!", moduleId);
+                            break;
+                    }
                 }
             }
         }

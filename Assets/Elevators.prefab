@@ -2387,7 +2387,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c836ed49fb3c564438e32b61b187a9e5, type: 3}
   - {fileID: 8300000, guid: 46862d730f94df140be609e78a774bcf, type: 3}
   - {fileID: 8300000, guid: 025bc225434223349b4397da19d4bbf7, type: 3}
-  snorts: []
+  snorts:
+  - {fileID: 8300000, guid: 16217ba9e32921543b7af807353426ba, type: 3}
   coughs:
   - {fileID: 8300000, guid: bd0acb41280b8ac4daad87a253aaf3c2, type: 3}
   - {fileID: 8300000, guid: 94f9751baa81d574991d4b4750d0e6b2, type: 3}
